@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 称为MyBatis的映射文件，用于规定数据访问接口中的方法与SQL语句之间的映射关系 -->
+<!-- 有了这个映射关系，执行数据访问接口中的方法，就自动执行对应的SQL语句 -->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- namespace属性引用被映射的数据访问接口，注意这里填接口对应的包名，因此不是mappers -->
+<mapper namespace="cn.tedu.store.mapper.UserMapper">
+    <!-- 添加用户信息 -->
+    <!-- void insertUser(User user) -->
+    <insert id="insertUser" parameterType="cn.tedu.store.bean.User">
+		INSERT INTO t_user(
+			username,password,email,phone,
+			created_user,created_time,
+			modified_user,modified_time
+		)VALUES (
+			#{username},#{password},#{email},#{phone},
+			#{createdUser},#{createdTime},
+			#{modifiedUser},#{modifiedTime}
+		)
+	</insert>
+
+    <!-- 通过用户名查询 -->
+    <!-- User selectUserByUsername(String username) -->
+	<!-- select 后面如果想写* 必须保证名字完全一样 但这里不一致，一个是下划线分割 一个是驼峰 -->
+    <select id="selectUserByUsername" resultType="cn.tedu.store.bean.User">
+		SELECT
+			id,username,password,phone,email,image,gender,
+			created_user AS createdUser,
+			created_time AS createdTime,
+			modified_user AS modifiedUser,
+			modified_time AS modifiedTime
+		FROM
+			t_user
+		WHERE
+			username=#{username}
+
+	</select>
+
+	<!-- 通过邮箱查询 -->
+	<!-- Integer selectByEmail(String email) -->
+	<select id="selectByEmail" resultType="java.lang.Integer">
+		SELECT COUNT(email)
+		FROM
+			t_user
+		WHERE
+			email=#{email}
+	</select>
+
+	<!-- 通过手机号查询 -->
+	<!-- Integer selectByPhone(String phone) -->
+	<select id="selectByPhone" resultType="java.lang.Integer">
+		SELECT
+			COUNT(phone)
+		FROM
+			t_user
+		WHERE
+			phone=#{phone}
+	</select>
+
+	<!-- 修改用户信息 -->
+	<!-- void updateUser(User user) -->
+	<!-- set写成标签具有去掉最后一个逗号的功能 -->
+	<update id="updateUser" parameterType="cn.tedu.store.bean.User">
+		UPDATE t_user
+		<set>
+			<if test="password!=null">
+				password = #{password},
+			</if>
+			<if test="username!=null">
+				username = #{username},
+			</if>
+			<if test="gender!=null">
+				gender = #{gender},
+			</if>
+			<if test="email!=null">
+				email = #{email},
+			</if>
+			<if test="phone!=null">
+				phone = #{phone}
+			</if>
+		</set>
+		WHERE
+		id = #{id}
+	</update>
+
+	<!-- 通过id查询用户信息 -->
+	<!-- User selectUserById(Integer id) -->
+	<select id ="selectUserById" resultType="cn.tedu.store.bean.User">
+		SELECT
+			id,username,password,phone,email,image,gender,
+			created_user AS createdUser,
+			created_time AS createdTime,
+			modified_user AS modifiedUser,
+			modified_time AS modifiedTime
+		FROM
+			t_user
+		WHERE
+			id = #{id}
+	</select>
+
+	<!-- 修改头像 -->
+	<!-- void updateImage(@Param("image") String image, @Param("id") Integer id) -->
+	<update id="updateImage">
+		UPDATE t_user
+		SET
+			image=#{image}
+		WHERE
+			id=#{id}
+	</update>
+
+
+</mapper>
+
+
+
+
+
+

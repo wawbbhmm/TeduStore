@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 称为MyBatis的映射文件，用于规定数据访问接口中的方法与SQL语句之间的映射关系 -->
+<!-- 有了这个映射关系，执行数据访问接口中的方法，就自动执行对应的SQL语句 -->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- namespace属性引用被映射的数据访问接口，注意这里填接口对应的包名，因此不是mappers -->
+<mapper namespace="cn.tedu.store.mapper.GoodsCategoryMapper">
+	<!-- 查询分类信息 -->
+	<!-- List<GoodsCategory> selectCategoryByParentId(
+            @Param("parentId") Integer parentId,
+            @Param("offset") Integer offset,
+            @Param("count") Integer count) -->
+	<select id="selectCategoryByParentId" resultType="cn.tedu.store.bean.GoodsCategory">
+		SELECT
+			id,
+			parent_id AS parentId,
+			`name`,
+			status,
+			sort_order AS sortOrder,
+			is_parent AS isParent,
+			created_user AS createdUser,
+			created_time AS createdTime,
+			modified_user AS modifiedUser,
+			modified_time AS modifiedTime
+		FROM
+			t_goods_category
+		WHERE
+			parent_id=#{parentId}
+		AND
+			status=1
+		<if test="offset!=null">
+			limit #{offset},#{count}
+		</if>
+	</select>
+
+
+
+
+
+</mapper>
+
+
+
+
+
+

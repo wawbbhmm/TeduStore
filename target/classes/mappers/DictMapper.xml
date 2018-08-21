@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 称为MyBatis的映射文件，用于规定数据访问接口中的方法与SQL语句之间的映射关系 -->
+<!-- 有了这个映射关系，执行数据访问接口中的方法，就自动执行对应的SQL语句 -->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- namespace属性引用被映射的数据访问接口，注意这里填接口对应的包名，因此不是mappers -->
+<mapper namespace="cn.tedu.store.mapper.DictMapper">
+	<!-- 查询省份信息 -->
+	<!-- List<Province> selectProvince(); -->
+	<select id="selectProvince" resultType="cn.tedu.store.bean.Province">
+		SELECT
+			id,
+			province_code AS provinceCode,
+			province_name AS provinceName
+		FROM
+			t_dict_provinces
+	</select>
+
+	<!-- 查询城市信息 -->
+	<!-- List<City> selectCity(String provinceCode) -->
+	<select id="selectCity" resultType="cn.tedu.store.bean.City">
+		SELECT
+			id,
+			province_code AS provinceCode,
+			city_code AS cityCode,
+			city_name AS cityName
+		FROM
+			t_dict_cities
+		WHERE
+			province_code=#{provinceCode}
+	</select>
+
+	<!-- 查询区域信息 -->
+	<!-- List<Area> selectArea(String cityCode) -->
+	<select id="selectArea" resultType="cn.tedu.store.bean.Area">
+		SELECT
+			id,
+			city_code AS cityCode,
+			area_code AS areaCode,
+			area_name AS areaName
+		FROM
+			t_dict_areas
+		WHERE
+			city_code=#{cityCode}
+	</select>
+
+	<!-- 查询省名称 -->
+	<!-- String selectProvinceNameByCode(String provinceCode) -->
+	<select id="selectProvinceNameByCode" resultType="java.lang.String">
+		SELECT
+			province_name
+		FROM
+			t_dict_provinces
+		WHERE
+			province_code=#{provinceCode}
+	</select>
+
+	<!-- 查询城市名称 -->
+	<!-- String selectCityNameByCode(String cityCode) -->
+	<select id="selectCityNameByCode" resultType="java.lang.String">
+		SELECT
+			city_name
+		FROM
+			t_dict_cities
+		WHERE
+			city_code=#{cityCode}
+	</select>
+
+	<!-- 查询区域名称 -->
+	<!-- String selectAreaNameByCode(String areaCode) -->
+	<select id="selectAreaNameByCode" resultType="java.lang.String">
+		SELECT
+			area_name
+		FROM
+			t_dict_areas
+		WHERE
+			area_code=#{areaCode}
+	</select>
+
+
+
+</mapper>
+
+
+
+
+
+

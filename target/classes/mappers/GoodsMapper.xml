@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 称为MyBatis的映射文件，用于规定数据访问接口中的方法与SQL语句之间的映射关系 -->
+<!-- 有了这个映射关系，执行数据访问接口中的方法，就自动执行对应的SQL语句 -->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- namespace属性引用被映射的数据访问接口，注意这里填接口对应的包名，因此不是mappers -->
+<mapper namespace="cn.tedu.store.mapper.GoodsMapper">
+	<!-- 查询热卖商品 -->
+	<!-- List<Goods> selectGoodsByCategoryId(
+            @Param("categoryId") Integer categoryId,
+            @Param("offset") Integer offset,
+            @Param("count") Integer count) -->
+	<select id="selectGoodsByCategoryId" resultType="cn.tedu.store.bean.Goods">
+		SELECT
+			id,
+			category_id AS categoryId,
+			item_type AS itemType,
+			title,
+			sell_point AS sellPoint,
+			barcode,
+			price,
+			num,
+			image,
+			status,
+			priority,
+			created_user AS createdUser,
+			created_time AS createdTime,
+			modified_user AS modifiedUser,
+			modified_time AS modifiedTime
+		FROM
+			t_goods
+		WHERE
+			category_id=#{categoryId}
+			AND num>0 AND status=1
+		ORDER BY
+			priority DESC
+			limit #{offset},#{count}
+	</select>
+
+	<!-- 根据分类id获取记录数 -->
+	<!-- Integer selectCount(Integer categoryId) -->
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM
+			t_goods
+		WHERE
+			category_id=#{categoryId}
+			AND num>0 AND status=1
+	</select>
+
+	<!-- 查询商品信息 -->
+	<!-- Goods selectGoodsById(String id) -->
+	<select id="selectGoodsById" resultType="cn.tedu.store.bean.Goods">
+		SELECT
+			id,
+			category_id AS categoryId,
+			item_type AS itemType,
+			title,
+			sell_point AS sellPoint,
+			barcode,
+			price,
+			num,
+			image,
+			status,
+			priority,
+			created_user AS createdUser,
+			created_time AS createdTime,
+			modified_user AS modifiedUser,
+			modified_time AS modifiedTime
+		FROM
+			t_goods
+		WHERE
+			id=#{id}
+	</select>
+
+
+
+
+
+</mapper>
+
+
+
+
+
+
